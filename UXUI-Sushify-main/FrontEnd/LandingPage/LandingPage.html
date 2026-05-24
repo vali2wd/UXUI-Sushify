@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sushi App Landing Page</title>
+    <style>
+      /* --- Reset & Base Styles --- */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+
+        user-select: none;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE/Edge */
+      }
+
+      /* --- Mobile Viewport Wrapper --- */
+      .mobile-container {
+        width: 100%;
+        max-width: 412px; /* Standard mobile width */
+        height: 915px; /* Standard mobile height */
+        background-color: #fafafa;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Hide scrollbar for clean app look */
+      .mobile-container::-webkit-scrollbar {
+        width: 0px;
+      }
+
+      /* --- Header Section --- */
+      .header {
+        background-color: #ffffff;
+        padding: 24px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo-container {
+        width: 75px;
+        height: 75px;
+        background-color: #d1d5db; /* fallback circle color */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .welcome-text {
+        font-size: 26px;
+        color: #1a1a1a;
+        line-height: 1.1;
+      }
+
+      .welcome-text span {
+        display: block;
+        font-weight: 800;
+        font-style: italic;
+      }
+
+      .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 8px;
+      }
+
+      .hamburger-menu span {
+        display: block;
+        width: 28px;
+        height: 4px;
+        background-color: #f5b05d;
+        border-radius: 2px;
+      }
+
+      /* --- Main Content --- */
+      .content {
+        padding: 20px;
+      }
+
+      /* Action Row: Points & Cart */
+      .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .points-badge {
+        background-color: #f5b05d;
+        color: #ffffff;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .points-icon {
+        width: 14px;
+        height: 14px;
+      }
+
+      .cart-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      .cart-icon {
+        width: 26px;
+        height: 26px;
+      }
+
+      #cart-count{
+      position:absolute;
+      top:-6px;
+      right:-6px;
+      background:#f39c12;
+      color:#fff;
+      font-size:10px;
+      padding:3px 6px;
+      border-radius:50%;
+      }
+
+
+      /* Search Bar */
+      .search-container {
+        margin-bottom: 20px;
+      }
+
+      .search-input {
+        width: 100%;
+        background-color: #f1e4cf;
+        border: none;
+        border-radius: 14px;
+        padding: 14px 20px;
+        font-size: 15px;
+        color: #a3957e;
+        outline: none;
+      }
+
+      .search-input::placeholder {
+        color: #a3957e;
+        font-style: italic;
+      }
+
+      /* Categories Tags */
+      .categories-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .tag {
+        padding: 5px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        background-color: #ffffff;
+        color: #333333;
+        border: 1px solid #e0e0e0;
+        cursor: pointer;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .tag.active {
+        background-color: #f5b05d;
+        color: #ffffff;
+        border-color: #f5b05d;
+        background-color: #f5b05d;
+      }
+
+      /* --- Product Card List --- */
+      .product-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .product-card {
+        background: linear-gradient(135deg, #f9c784 0%, #f5af59 100%);
+        border-radius: 24px;
+        padding: 20px;
+        position: relative;
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 6px 16px rgba(245, 176, 93, 0.3);
+        overflow: hidden;
+        text-shadow: 1px 1px 2px black;
+      }
+
+      /* Simulated background image blend matching the visual */
+      .product-card::after {
+        content: "";
+        position: absolute;
+        right: -20px;
+        top: 0;
+        bottom: 0;
+        width: 60%;
+	background-image: var(--image);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.85;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        z-index: 1;
+        text-shadow: 10px 1px 2px black;
+      }
+
+      .product-title {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: bold;
+        font-style: italic;
+        text-shadow: 1px 1px 2px black;
+      }
+
+      .options-btn {
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 22px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 4px;
+      }
+
+      .product-description {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 9px;
+        font-style: italic;
+        max-width: 55%;
+        margin-top: 2px;
+        margin-bottom: auto;
+        line-height: 1.3;
+        z-index: 1;
+      }
+
+      .price-button {
+        background-color: #f39c12;
+        border: none;
+        border-radius: 16px;
+        padding: 10px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 16px;
+        width: fit-content;
+        margin-top: 12px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+        transition: transform 0.1s ease;
+      }
+
+      .price-button:active {
+        transform: scale(0.97);
+      }
+
+	
+	/* OVERLAY DARK */
+	#overlay{
+  	 position: absolute;
+  	 top:0;
+  	 left:0;
+  	 width:100%;
+  	 height:100%;
+  	 background:rgba(0,0,0,0.4);
+  	 opacity:0;
+  	 pointer-events:none;
+  	 transition:0.3s;
+  	 z-index:5;
+	}
+
+	/* MENU */
+	
+	#side-menu{
+  	position: absolute;
+  	top:0;
+  	right:-260px;
+  	width:260px;
+  	height:100%;
+  	background:#fff;
+  	box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+  	padding:20px;
+  	transition:0.3s;
+  	z-index:10;
+	}
+
+
+#side-menu h3,
+#side-menu p{
+  margin:15px 0;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* ACTIVE STATE */
+#side-menu.active{
+  right:0;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+
+
+      /* Shake Animation */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-4px);
+        }
+        40%,
+        80% {
+          transform: translateX(4px);
+        }
+      }
+
+      /* Class applied temporarily via JavaScript */
+      .shake-active {
+        animation: shake 0.4s ease-in-out;
+      }
+
+      .price-cart-icon {
+        width: 18px;
+        height: 18px;
+        filter: brightness(0) invert(1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-container">
+      <header class="header">
+        <div class="header-left">
+          <div class="logo-container">
+            <img
+              src="../Assets/sushi-logo.svg"
+              alt="Sushi Logo"
+              class="logo-img"
+            />
+          </div>
+          <h1 class="welcome-text">Bine ai revenit, <span>Ana-Maria!</span></h1>
+        </div>
+        <div class="hamburger-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="action-row">
+          <div class="points-badge">
+            <span>1795</span>
+            <img
+              src="../Assets/fidelity-points.svg"
+              alt="Points"
+              class="points-icon"
+            />
+          </div>
+          <button class="cart-btn">     
+	     <div style="position:relative">
+               <img src="../Assets/shopping-cart.svg" class="cart-icon" />
+               <span id="cart-count">0</span>
+             </div>
+          </button>
+        </div>
+
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Astazi am pofta de ..."
+          />
+        </div>
+
+        <div class="categories-container">
+	  <span class="tag active">All</span>
+          <span class="tag">Sushi</span>
+          <span class="tag">Ramen</span>
+          <span class="tag">Vegan</span>
+          <span class="tag">Desert</span>
+          <span class="tag">Bauturi</span>
+        </div>
+
+       <div class="product-list" id="product-list"></div>
+      </main>
+	<div id="overlay" onclick="closeMenu()"></div>
+
+  	 <div id="side-menu">
+    	 <h3>👤 Cont</h3>
+    	 <p>📦 Comandă în grup</p>
+    	 <p onclick="goOrders()">🧾 Comenzile mele</p>
+    	 <p>⚙️ Setări</p>
+  	</div>
+
+    </div>
+
+<script>
+    // --- Element Selectors ---
+    const tags = document.querySelectorAll(".tag");
+    const priceButtons = document.querySelectorAll('.price-button');
+    const topCartIcon = document.querySelector('.cart-icon');
+
+    // --- Category Tag Toggle Feature ---
+    tags.forEach((tag) => {
+        tag.addEventListener("click", () => {
+            // Remove 'active' class from all tags
+            tags.forEach((t) => t.classList.remove("active"));
+            // Add 'active' class to the clicked tag
+            tag.classList.add("active");
+        });
+    });
+
+    // --- Price Button Cart Shake Feature ---
+    priceButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove the class first in case it's already animating from a previous click
+            topCartIcon.classList.remove('shake-active');
+            
+            // Trigger a reflow to reset the CSS animation timeline
+            void topCartIcon.offsetWidth;
+            
+            // Add the class back to run the animation
+            topCartIcon.classList.add('shake-active');
+        });
+    });
+
+    // --- Optional Copy Protection Backups ---
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'a')) {
+            e.preventDefault();
+        }
+    });    
+
+    function goToProduct(name){
+      localStorage.setItem('selectedProduct', name);
+      window.location.href = '../ProductPage/product.html';
+    }
+    
+    function addToCart(product){
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      const existing = cart.find(p => p.name === product.name);
+      if(existing){
+       existing.qty++;
+      } else {
+        cart.push({...product, qty:1});
+      }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+   }
+
+   function updateCartCount(){
+     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+     let count = cart.reduce((sum,p) => sum + p.qty, 0);
+     document.getElementById('cart-count').innerText = count;
+   }
+
+   updateCartCount();
+   
+   document.querySelector('.cart-btn').onclick = () => {
+     window.location.href = '../CartPage/CartPage.html';
+   };
+const products = {
+  "Red Dragon Roll":{
+    price:78.99,
+    desc:"Sushi cu somon si avocado",
+    category:"sushi",
+    ingredients:"Somon, avocado, orez",
+    calories:"450 kcal",
+    allergens:"Peste, soia",
+    image:"../Assets/sushi-roll.jpg",
+    vegan:false
+  },
+  "North Sea":{
+    price:38.99,
+    desc:"Sushi cu icre de somon si alge nori",
+    category:"sushi",
+    ingredients:"Icre somon, crema de branza, susan mix, alge nori, orez, sos ananas",
+    calories:"228,42 kcal",
+    allergens:"Cereale, Oua, Peste, Soia, Lapte",
+    image:"../Assets/sushinorth.jpg",
+    vegan:false
+  },
+
+  "Ramen":{
+    price:45,
+    desc:"Supa japoneza cu taitei",
+    category:"ramen",
+    ingredients:"Taitei, ou, porc",
+    calories:"650 kcal",
+    allergens:"Gluten",
+    image:"../Assets/porkramen.jpg",
+    vegan:false
+  },
+
+  "Mochi":{
+    price:20,
+    desc:"Desert japonez dulce",
+    category:"desert",
+    ingredients:"Orez dulce",
+    calories:"200 kcal",
+    allergens:"",
+    image:"../Assets/mochi.jpg",
+    vegan:true
+  },
+
+  "Salata Vegan":{
+    price:30,
+    desc:"Salata fresh 100% vegana",
+    category:"salad",
+    ingredients:"Legume mixte",
+    calories:"150 kcal",
+    allergens:"",
+    image:"../Assets/salad.jpg",
+    vegan:true
+  },
+
+  "Cola":{
+    price:10,
+    desc:"Bautura racoritoare",
+    category:"bauturi",
+    ingredients:"Apa, zahar",
+    calories:"150 kcal",
+    allergens:"",
+    image:"../Assets/cola.jpg",
+    vegan:false
+  }
+};
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const container = document.getElementById('product-list');
+  const tags = document.querySelectorAll('.tag');
+
+  let activeCategory = "all";
+
+  function renderProducts(filterText = '') {
+
+    container.innerHTML = '';
+
+    Object.keys(products).forEach(name => {
+      const p = products[name];
+
+      // 🔍 SEARCH (caută în nume)
+      if(!name.toLowerCase().includes(filterText.toLowerCase())) return;
+
+      // 🏷️ FILTER NORMAL (Sushi / Ramen etc.)
+      
+      if(activeCategory !== "all" && activeCategory !== "vegan"){
+        if(p.category !== activeCategory) return;
+        }
+
+      if(activeCategory === "vegan" && !p.vegan) return;
+
+      // ✅ CREATE CARD
+      const card = document.createElement('div');
+      card.className = "product-card";
+
+      // 🖼️ imagine în dreapta
+      card.style.setProperty('--image', `url(${p.image})`);
+
+      card.onclick = () => goToProduct(name);
+
+      card.innerHTML = `
+        <div class="card-header">
+          <h2 class="product-title">${name}</h2>
+
+          ${
+            p.vegan 
+            ? `<img src="../Assets/vegan.png" style="width:20px"/>`
+            : `<button class="options-btn">&#8942;</button>`
+          }
+        </div>
+
+        <p class="product-description">${p.desc}</p>
+
+        <button class="price-button">
+          <img src="../Assets/shopping-cart.svg" class="price-cart-icon"/>
+          ${p.price} RON
+        </button>
+      `;
+
+      // 🛒 ADD TO CART (fără conflict)
+      card.querySelector('.price-button').onclick = (e) => {
+        e.stopPropagation();
+        addToCart({...p, name});
+      };
+
+      container.appendChild(card);
+    });
+  }
+
+	const searchInput = document.querySelector('.search-input');
+
+	searchInput.addEventListener('input', () => {
+  	renderProducts(searchInput.value);
+	});
+
+  // 🏷️ FILTER CLICK
+  tags.forEach(tag => {
+    tag.addEventListener("click", () => {
+
+      tags.forEach(t => t.classList.remove("active"));
+      tag.classList.add("active");
+
+      activeCategory = tag.innerText.toLowerCase();
+
+      renderProducts(searchInput.value);
+    });
+  });
+
+  // ✅ PORNIRE INITIALĂ
+  renderProducts();
+
+});
+
+
+const menu = document.getElementById('side-menu');
+const overlay = document.getElementById('overlay');
+
+// OPEN MENU
+document.querySelector('.hamburger-menu').onclick = () => {
+  menu.classList.add('active');
+  overlay.classList.add('active');
+};
+
+// CLOSE
+function closeMenu(){
+  menu.classList.remove('active');
+  overlay.classList.remove('active');
+}
+
+
+function goOrders(){
+  window.location.href = '../OrderPage/OrderPage.html';
+}
+
+
+</script>
+  </body>
+</html>

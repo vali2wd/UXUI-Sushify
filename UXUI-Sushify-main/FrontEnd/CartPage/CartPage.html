@@ -1,0 +1,209 @@
+
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI"}
+body{background:#f4f4f4;display:flex;justify-content:center;align-items:center;min-height:100vh}
+
+.mobile-container{
+  max-width:412px;
+  width:100%;
+  height:915px;
+  background:#fafafa;
+  overflow-y:auto;
+}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-radius:0 0 20px 20px;
+}
+.header-text{
+  font-size:22px;
+  font-weight:800;
+  font-style:italic;
+}
+
+.cart-icon{
+  width:28px;
+  cursor:pointer;
+}
+
+@keyframes shake {
+  0%,100% {transform:translateX(0);}
+  20%,60% {transform:translateX(-4px);}
+  40%,80% {transform:translateX(4px);}
+}
+
+.shake-active{
+  animation:shake 0.4s;
+}
+
+/* CART */
+.section{padding:20px}
+
+.cart-item{
+  background:#fff;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+.total{
+  margin-top:15px;
+  font-weight:bold;
+  font-size:18px;
+}
+
+.cart-item{
+  display:flex;
+  gap:12px;
+  background:#fff;
+  padding:12px;
+  border-radius:16px;
+  margin-bottom:12px;
+  align-items:center;
+}
+
+.cart-img{
+  width:70px;
+  height:70px;
+  border-radius:12px;
+  object-fit:cover;
+}
+
+.cart-info{
+  flex:1;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+
+.qty button{
+  border:none;
+  background:#f5b05d;
+  color:#fff;
+  width:26px;
+  height:26px;
+  border-radius:8px;
+}
+
+
+.checkout{
+  margin-top:15px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#f39c12;
+  color:#fff;
+  font-weight:bold;
+  font-size:16px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="mobile-container">
+
+  <!-- HEADER -->
+  
+<div class="header">
+  <span onclick="goBack()" style="cursor:pointer">←</span>
+  <img src="../Assets/sushi-logo.svg" style="width:50px"/>
+  <span class="header-text">O sa aleg...</span>
+  <img src="../Assets/shopping-cart.svg" class="cart-icon" onclick="goCart()"/>
+</div>
+
+
+  <div class="section" id="cart"></div>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let container = document.getElementById('cart');
+
+function renderCart(){
+  container.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((p, index) => {
+    total += p.price * p.qty;
+
+    container.innerHTML += `
+    <div class="cart-item">
+      
+     <img src="${p.image}" class="cart-img">
+
+      <div class="cart-info">
+        <div class="cart-title">${p.name}</div>
+        <div class="cart-price">${p.price} RON</div>
+
+        <div class="qty">
+          <button onclick="decrease(${index})">-</button>
+          <span>${p.qty}</span>
+          <button onclick="increase(${index})">+</button>
+        </div>
+
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML += `
+    <div class="total">Total: ${total.toFixed(2)} RON</div>
+    <button class="checkout" onclick="checkout()">Comanda</button>
+  `;
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function increase(i){
+  cart[i].qty++;
+  renderCart();
+}
+
+function decrease(i){
+  if(cart[i].qty > 1){
+    cart[i].qty--;
+  } else {
+    cart.splice(i,1);
+  }
+  renderCart();
+}
+
+renderCart();
+
+function checkout(){
+  const btn = document.querySelector('.checkout');
+
+  btn.style.transform = "scale(0.95)";
+  setTimeout(()=>{
+    window.location.href = '../CheckoutPage/CheckoutPage.html';
+  },200);
+}
+
+function goBack(){
+  window.location.href = '../LandingPage/LandingPage.html';
+}
+
+
+</script>
+
+</body>
+</html>
