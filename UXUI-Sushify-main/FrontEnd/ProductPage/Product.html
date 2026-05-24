@@ -1,0 +1,240 @@
+
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI"}
+body{background:#f4f4f4;display:flex;justify-content:center;align-items:center;min-height:100vh}
+
+.mobile-container{
+  max-width:412px;
+  width:100%;
+  height:915px;
+  background:#fafafa;
+  overflow-y:auto;
+}
+
+/* HEADER ca la landing */
+.header{
+  background:#fff;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.header-text{
+  font-size:22px;
+  font-weight:800;
+  font-style:italic;
+}
+
+.cart-icon{
+  width:28px;
+  cursor:pointer;
+}
+
+/* SHAKE ca in landing */
+@keyframes shake {
+  0%,100% {transform:translateX(0);}
+  20%,60% {transform:translateX(-4px);}
+  40%,80% {transform:translateX(4px);}
+}
+
+.shake-active{
+  animation:shake 0.4s;
+}
+
+
+/* PRODUCT */
+.section{padding:20px}
+.product-img{
+  height:250px;
+  background:url('../Assets/sushi-roll.jpg') center/cover;
+  border-radius:20px;
+}
+.product-title{font-size:24px;font-weight:bold;margin-top:10px}
+.product-desc{font-size:13px;color:#777}
+.price{font-size:20px;color:#f39c12;margin-top:10px}
+
+.add-btn{
+  margin-top:15px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#f5b05d;
+  color:#fff;
+  font-weight:bold;
+}
+
+button:active{
+  transform: scale(0.97);
+}
+ .price-cart-icon {
+        width: 20px;
+        height: 18px;
+        filter: brightness(0) invert(1);
+      }
+
+</style>
+</head>
+
+<body>
+<div class="mobile-container">
+
+  <!-- HEADER -->
+  
+  <div class="header">
+    <span onclick="goBack()">←</span>
+    <img src="../Assets/sushi-logo.svg" style="width:50px"/>
+    <span class="header-text">Oare sa imi iau...</span>
+    <img src="../Assets/shopping-cart.svg" class="cart-icon" onclick="goCart()"/>
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="section">
+    <div class="product-img"></div>
+    <div class="product-title">Red Dragon Roll</div>
+    <div class="product-desc">Contrast intre interior cald si crocant.
+    </div>
+    <div class="price">78.99 RON</div>
+    <div id="extra" style="margin-top:10px;font-size:13px;"></div>
+    <button class="add-btn" onclick="addToCart()">
+       <img
+           src="../Assets/shopping-cart.svg"
+           alt="Add"
+           class="price-cart-icon"
+       />
+	Adauga in cos
+    </button>
+  </div>
+
+</div>
+
+<script>
+function goCart(){
+  window.location.href = '../CartPage/CartPage.html';
+}
+
+
+
+
+function addToCart(){
+
+  const selected = localStorage.getItem('selectedProduct');
+  const p = products[selected];
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  let existing = cart.find(item => item.name === selected);
+
+  if(existing){
+    existing.qty++;
+  } else {
+    cart.push({
+      name: selected,
+      price: p.price,
+      qty: 1,
+      image: p.image
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  window.location.href = '../CartPage/CartPage.html';
+}
+
+
+  
+const products = {
+  "Red Dragon Roll":{
+    price:78.99,
+    desc:"Sushi special cu somon si avocado",
+    ingredients:"Somon, avocado, orez",
+    calories:"450 kcal",
+    allergens:"Peste, soia",
+    image:"../Assets/sushi-roll.jpg"
+  },
+"North Sea":{
+    price:38.99,
+    desc:"Sushi cu icre de somon si alge nori",
+    ingredients:"Icre somon, crema de branza, susan mix, alge nori, orez, sos ananas",
+    calories:"228,42 kcal",
+    allergens:"Cereale, Oua, Peste, Soia, Lapte",
+    image:"../Assets/sushinorth.jpg"
+  },
+
+
+  "Ramen":{
+    price:45,
+    desc:"Supă japoneză cu tăiței",
+    ingredients:"Tăiței, ou, porc",
+    calories:"650 kcal",
+    allergens:"Gluten",
+    image:"../Assets/porkramen.jpg"
+  },
+
+  "Mochi":{
+    price:20,
+    desc:"Desert japonez moale",
+    ingredients:"Orez dulce",
+    calories:"200 kcal",
+    allergens:"",
+    image:"../Assets/mochi.jpg"
+  },
+
+  "Salata Vegan":{
+    price:30,
+    desc:"Salata fresh 100% vegana",
+    category:"",
+    ingredients:"Legume mixte",
+    calories:"150 kcal",
+    allergens:"",
+    image:"../Assets/salad.jpg",
+    vegan:true
+  },
+
+  "Cola":{
+    price:10,
+    desc:"Băutură răcoritoare",
+    ingredients:"Apa, zahăr",
+    calories:"150 kcal",
+    allergens:"",
+    image:"../Assets/cola.jpg"
+  }
+};
+
+  
+const selected = localStorage.getItem('selectedProduct');
+
+if(selected && products[selected]){
+  const p = products[selected];
+
+  document.querySelector('.product-title').innerText = selected;
+  document.querySelector('.product-desc').innerText = p.desc;
+  document.querySelector('.price').innerText = p.price + " RON";
+
+  document.querySelector('.product-img').style.backgroundImage = `url(${p.image})`;
+
+  document.querySelector('#extra').innerHTML = `
+    <p><b>Ingrediente:</b> ${p.ingredients}</p>
+    <p><b>Calorii:</b> ${p.calories}</p>
+    <p><b>Alergeni:</b> ${p.allergens}</p>
+  `;
+}
+
+function goBack(){
+  window.location.href = '../LandingPage/LandingPage.html';
+}
+
+</script>
+
+</body>
+</html>

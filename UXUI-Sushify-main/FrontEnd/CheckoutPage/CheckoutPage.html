@@ -1,0 +1,74 @@
+
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{background:#f4f4f4;display:flex;justify-content:center;align-items:center;height:100vh;font-family:"Segoe UI"}
+.container{
+  max-width:412px;
+  width:100%;
+  background:#fff;
+  padding:20px;
+  border-radius:20px;
+}
+h2{margin-bottom:10px}
+</style>
+</head>
+
+<body>
+<div class="container" id="order"></div>
+
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+// 🔢 număr comandă
+let number = "#" + Math.floor(Math.random()*9000+1000);
+
+// ✅ salvează comanda
+orders.push({
+  id: number,
+  items: cart,
+  date: new Date().toLocaleString()
+});
+
+localStorage.setItem('orders', JSON.stringify(orders));
+
+// ✅ UI
+let html = `<h2>Comanda ${number}</h2>`;
+
+cart.forEach(p=>{
+  html += `<p>${p.name} x${p.qty}</p>`;
+});
+
+html += `
+  <button onclick="goHome()" style="
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:#f39c12;
+    color:#fff;
+    font-weight:bold;
+  ">
+    Inapoi la Home
+  </button>
+`;
+
+document.getElementById('order').innerHTML = html;
+
+// ✅ golește cart
+localStorage.removeItem('cart');
+
+function goHome(){
+  window.location.href = '../LandingPage/LandingPage.html';
+}
+</script>
+
+</body>
+</html>

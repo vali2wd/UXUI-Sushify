@@ -1,0 +1,65 @@
+
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+
+<style>
+body{
+  background:#f4f4f4;
+  font-family:"Segoe UI";
+  display:flex;
+  justify-content:center;
+}
+
+.container{
+  max-width:412px;
+  width:100%;
+  background:#fafafa;
+  min-height:100vh;
+  padding:20px;
+}
+
+.order{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>📦 Comenzile mele</h2>
+  <div id="orders"></div>
+</div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+let container = document.getElementById('orders');
+
+if(orders.length === 0){
+  container.innerHTML = "<p>Nu ai comenzi inca</p>";
+}
+
+orders.forEach(o=>{
+  let html = `<div class="order">
+    <b>Comanda ${o.id}</b><br>
+    <small>${o.date}</small>
+  `;
+
+  o.items.forEach(item=>{
+    html += `<p>${item.name} x${item.qty}</p>`;
+  });
+
+  html += `</div>`;
+
+  container.innerHTML += html;
+});
+</script>
+
+</body>
+</html>
